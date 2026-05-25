@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#0f1117" />
+    <title>Portrait AR</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="ar-shell">
+        <div id="loading-overlay" class="overlay hidden">
+          <div class="overlay-card">
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Loading AR…</p>
+          </div>
+        </div>
+
+        <div id="scan-hint" class="scan-hint hidden">
+          <div class="scan-frame" aria-hidden="true"></div>
+          <p>Looking for portrait…</p>
+        </div>
+
+        <div id="found-badge" class="found-badge hidden" aria-live="polite">
+          Portrait found
+        </div>
+
+        <button id="stop-ar" type="button" class="btn btn-ghost stop-btn hidden">
+          Exit AR
+        </button>
+
+        <a-scene
+          id="ar-scene"
+          embedded
+          mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiLoading: #loading-overlay; uiScanning: #scan-hint; uiError: #error-overlay;"
+          color-space="sRGB"
+          renderer="colorManagement: true, physicallyCorrectLights: true"
+          vr-mode-ui="enabled: false"
+          device-orientation-permission-ui="enabled: false"
+        >
+          <a-assets>
+            <video
+              id="ar-video"
+              src="./Creat_a_video_of_second_wh.mp4"
+              preload="auto"
+              loop
+              muted
+              crossorigin="anonymous"
+              playsinline
+              webkit-playsinline
+            ></video>
+          </a-assets>
+
+          <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+          <a-entity id="image-target" mindar-image-target="targetIndex: 0">
+            <a-video
+              id="overlay-video"
+              src="#ar-video"
+              width="1"
+              height="1.410880787037037"
+              position="0 0 0"
+              rotation="0 0 0"
+            ></a-video>
+          </a-entity>
+        </a-scene>
+      </div>
+
+      <section id="welcome-panel" class="panel welcome-overlay">
+        <header class="panel-header">
+          <h1>Portrait AR</h1>
+          <p class="subtitle">
+            Point your camera at the printed portrait to play the overlay video.
+          </p>
+        </header>
+
+        <figure class="target-preview">
+          <img
+            src="./Gemini_Generated_Image_vngjivngjivngjiv.png"
+            alt="AR target — print or display this image"
+            width="1728"
+            height="2438"
+          />
+          <figcaption>Scan this image</figcaption>
+        </figure>
+
+        <ul class="tips">
+          <li>Use good lighting and hold the phone steady.</li>
+          <li>Keep the full portrait visible in the frame.</li>
+          <li>Allow camera access when prompted.</li>
+        </ul>
+
+        <button id="start-ar" type="button" class="btn btn-primary">
+          Start camera
+        </button>
+
+        <p id="https-hint" class="hint hidden">
+          Camera requires HTTPS. Open this page via GitHub Pages or localhost, not
+          as a local file.
+        </p>
+      </section>
+
+      <div id="error-overlay" class="overlay hidden">
+        <div class="overlay-card">
+          <h2>Could not start AR</h2>
+          <p>
+            Your browser may not support the camera, or the page was opened without
+            HTTPS. Try Chrome or Safari on your phone via the published GitHub Pages
+            link.
+          </p>
+          <button id="error-back" type="button" class="btn btn-primary">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
