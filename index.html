@@ -4,124 +4,379 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#0f1117" />
+    <meta name="theme-color" content="#000" />
     <title>Portrait AR</title>
-    <link rel="stylesheet" href="./css/style.css" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: #000;
+        color: #fff;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      #ar-shell {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        height: 100dvh;
+        z-index: 1;
+      }
+
+      #ar-scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Keep A-Frame canvas behind our UI */
+      .a-canvas {
+        z-index: 1 !important;
+      }
+
+      #ui-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        pointer-events: none;
+      }
+
+      #ui-layer > * {
+        pointer-events: auto;
+      }
+
+      #boot-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        padding-top: max(1.5rem, env(safe-area-inset-top));
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+        background: #0f1117;
+        text-align: center;
+        pointer-events: auto;
+      }
+
+      #boot-overlay p {
+        margin: 0;
+        max-width: 18rem;
+        color: #b4bcc9;
+        font-size: 0.95rem;
+        line-height: 1.45;
+      }
+
+      .spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 3px solid rgba(255, 255, 255, 0.15);
+        border-top-color: #5b8def;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #scan-hint {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: max(1.25rem, env(safe-area-inset-bottom));
+        z-index: 55;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: none;
+      }
+
+      #scan-hint p {
+        margin: 0.5rem 0 0;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.55);
+        font-size: 0.85rem;
+        backdrop-filter: blur(6px);
+      }
+
+      .scan-frame {
+        width: min(62vw, 11rem);
+        aspect-ratio: 1728 / 2438;
+        border: 2px dashed rgba(255, 255, 255, 0.65);
+        border-radius: 0.35rem;
+      }
+
+      #found-badge {
+        position: fixed;
+        top: max(0.75rem, env(safe-area-inset-top));
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 55;
+        padding: 0.4rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(46, 160, 98, 0.92);
+        font-size: 0.8rem;
+        font-weight: 600;
+        pointer-events: none;
+      }
+
+      #error-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        background: rgba(15, 17, 23, 0.95);
+        text-align: center;
+        pointer-events: auto;
+      }
+
+      #error-overlay h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.15rem;
+      }
+
+      #error-overlay p {
+        margin: 0 0 1rem;
+        color: #b4bcc9;
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .btn {
+        min-height: 3rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.65rem;
+        background: linear-gradient(135deg, #5b8def, #3d6fd8);
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        touch-action: manipulation;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
-    <div id="app">
-      <div id="ar-shell">
-        <div id="loading-overlay" class="overlay hidden">
-          <div class="overlay-card">
-            <div class="spinner" aria-hidden="true"></div>
-            <p>Loading AR…</p>
-          </div>
-        </div>
+    <div id="ar-shell">
+      <a-scene
+        id="ar-scene"
+        embedded
+        mindar-image="imageTargetSrc: targets.mind; autoStart: false;"
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights: true"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+        <a-assets>
+          <video
+            id="ar-video"
+            src="Creat_a_video_of_second_wh.mp4"
+            preload="auto"
+            loop
+            muted
+            crossorigin="anonymous"
+            playsinline
+            webkit-playsinline
+          ></video>
+        </a-assets>
 
-        <div id="scan-hint" class="scan-hint hidden">
-          <div class="scan-frame" aria-hidden="true"></div>
-          <p>Looking for portrait…</p>
-        </div>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <div id="found-badge" class="found-badge hidden" aria-live="polite">
-          Portrait found
-        </div>
+        <a-entity id="image-target" mindar-image-target="targetIndex: 0">
+          <a-video
+            id="overlay-video"
+            src="#ar-video"
+            width="1"
+            height="1.410880787037037"
+            position="0 0 0"
+          ></a-video>
+        </a-entity>
+      </a-scene>
+    </div>
 
-        <button id="stop-ar" type="button" class="btn btn-ghost stop-btn hidden">
-          Exit AR
+    <div id="ui-layer">
+      <div id="boot-overlay">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="boot-message">Starting camera…</p>
+        <button id="tap-start" type="button" class="btn hidden">
+          Tap to allow camera
         </button>
-
-        <a-scene
-          id="ar-scene"
-          embedded
-          mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiLoading: #loading-overlay; uiScanning: #scan-hint; uiError: #error-overlay;"
-          color-space="sRGB"
-          renderer="colorManagement: true, physicallyCorrectLights: true"
-          vr-mode-ui="enabled: false"
-          device-orientation-permission-ui="enabled: false"
-        >
-          <a-assets>
-            <video
-              id="ar-video"
-              src="./Creat_a_video_of_second_wh.mp4"
-              preload="auto"
-              loop
-              muted
-              crossorigin="anonymous"
-              playsinline
-              webkit-playsinline
-            ></video>
-          </a-assets>
-
-          <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-          <a-entity id="image-target" mindar-image-target="targetIndex: 0">
-            <a-video
-              id="overlay-video"
-              src="#ar-video"
-              width="1"
-              height="1.410880787037037"
-              position="0 0 0"
-              rotation="0 0 0"
-            ></a-video>
-          </a-entity>
-        </a-scene>
       </div>
 
-      <section id="welcome-panel" class="panel welcome-overlay">
-        <header class="panel-header">
-          <h1>Portrait AR</h1>
-          <p class="subtitle">
-            Point your camera at the printed portrait to play the overlay video.
-          </p>
-        </header>
+      <div id="scan-hint" class="hidden">
+        <div class="scan-frame" aria-hidden="true"></div>
+        <p>Point at the portrait</p>
+      </div>
 
-        <figure class="target-preview">
-          <img
-            src="./Gemini_Generated_Image_vngjivngjivngjiv.png"
-            alt="AR target — print or display this image"
-            width="1728"
-            height="2438"
-          />
-          <figcaption>Scan this image</figcaption>
-        </figure>
+      <div id="found-badge" class="hidden" aria-live="polite">Portrait found</div>
+    </div>
 
-        <ul class="tips">
-          <li>Use good lighting and hold the phone steady.</li>
-          <li>Keep the full portrait visible in the frame.</li>
-          <li>Allow camera access when prompted.</li>
-        </ul>
-
-        <button id="start-ar" type="button" class="btn btn-primary">
-          Start camera
-        </button>
-
-        <p id="https-hint" class="hint hidden">
-          Camera requires HTTPS. Open this page via GitHub Pages or localhost, not
-          as a local file.
+    <div id="error-overlay" class="hidden">
+      <div>
+        <h2>Camera not available</h2>
+        <p>
+          Allow camera access in your browser, or try Chrome / Safari on your phone.
         </p>
-      </section>
-
-      <div id="error-overlay" class="overlay hidden">
-        <div class="overlay-card">
-          <h2>Could not start AR</h2>
-          <p>
-            Your browser may not support the camera, or the page was opened without
-            HTTPS. Try Chrome or Safari on your phone via the published GitHub Pages
-            link.
-          </p>
-          <button id="error-back" type="button" class="btn btn-primary">
-            Back
-          </button>
-        </div>
+        <button id="retry-btn" type="button" class="btn">Try again</button>
       </div>
     </div>
 
-    <script src="./js/app.js"></script>
+    <script>
+      (function () {
+        const sceneEl = document.getElementById("ar-scene");
+        const targetEl = document.getElementById("image-target");
+        const videoEl = document.getElementById("ar-video");
+        const bootOverlay = document.getElementById("boot-overlay");
+        const bootMessage = document.getElementById("boot-message");
+        const tapStartBtn = document.getElementById("tap-start");
+        const scanHint = document.getElementById("scan-hint");
+        const foundBadge = document.getElementById("found-badge");
+        const errorOverlay = document.getElementById("error-overlay");
+        const retryBtn = document.getElementById("retry-btn");
+
+        let arStarted = false;
+        let sceneReady = false;
+
+        function getArSystem() {
+          return sceneEl.systems && sceneEl.systems["mindar-image-system"];
+        }
+
+        function hideBoot() {
+          bootOverlay.classList.add("hidden");
+        }
+
+        function showBoot(message, showTapButton) {
+          bootOverlay.classList.remove("hidden");
+          bootMessage.textContent = message;
+          tapStartBtn.classList.toggle("hidden", !showTapButton);
+        }
+
+        function showScanning() {
+          scanHint.classList.remove("hidden");
+          foundBadge.classList.add("hidden");
+        }
+
+        function startAR() {
+          if (arStarted) return;
+          const arSystem = getArSystem();
+          if (!arSystem) return;
+
+          arStarted = true;
+          errorOverlay.classList.add("hidden");
+          showBoot("Starting camera…", false);
+
+          try {
+            arSystem.start();
+          } catch (err) {
+            console.error(err);
+            arStarted = false;
+            showBoot("Tap to allow camera", true);
+          }
+        }
+
+        function tryAutoStart() {
+          if (!sceneReady || arStarted) return;
+          startAR();
+        }
+
+        async function playOverlay() {
+          try {
+            await videoEl.play();
+          } catch (e) {
+            console.warn("Video play:", e);
+          }
+        }
+
+        function pauseOverlay() {
+          videoEl.pause();
+        }
+
+        tapStartBtn.addEventListener("click", startAR);
+        retryBtn.addEventListener("click", () => {
+          arStarted = false;
+          errorOverlay.classList.add("hidden");
+          showBoot("Starting camera…", false);
+          tryAutoStart();
+        });
+
+        sceneEl.addEventListener("loaded", () => {
+          sceneReady = true;
+          tryAutoStart();
+        });
+
+        sceneEl.addEventListener("arReady", () => {
+          hideBoot();
+          showScanning();
+        });
+
+        sceneEl.addEventListener("arError", () => {
+          arStarted = false;
+          hideBoot();
+          errorOverlay.classList.remove("hidden");
+        });
+
+        targetEl.addEventListener("targetFound", () => {
+          foundBadge.classList.remove("hidden");
+          scanHint.classList.add("hidden");
+          playOverlay();
+        });
+
+        targetEl.addEventListener("targetLost", () => {
+          foundBadge.classList.add("hidden");
+          scanHint.classList.remove("hidden");
+          pauseOverlay();
+        });
+
+        /* iOS often blocks camera until user taps — one tap anywhere starts AR */
+        function onFirstInteraction() {
+          if (!arStarted && sceneReady) {
+            startAR();
+          }
+        }
+        document.body.addEventListener("touchstart", onFirstInteraction, {
+          once: true,
+          passive: true,
+        });
+        document.body.addEventListener("click", onFirstInteraction, { once: true });
+
+        /* If auto-start is blocked, show tap button after a short wait */
+        setTimeout(() => {
+          if (!arStarted && sceneReady) {
+            showBoot("Tap to allow camera", true);
+          }
+        }, 2500);
+      })();
+    </script>
   </body>
 </html>
