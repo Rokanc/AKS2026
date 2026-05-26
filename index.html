@@ -221,29 +221,78 @@
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false"
       >
-        <a-assets>
-          <video
-            id="ar-video"
-            src="Creat_a_video_of_second_wh.mp4"
-            preload="auto"
-            loop
-            muted
-            crossorigin="anonymous"
-            playsinline
-            webkit-playsinline
-          ></video>
+        <a-assets timeout="120000">
+          <video id="video-0" src="Airida.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-1" src="Albertas.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-2" src="Dalius.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-3" src="Dija.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-4" src="Ema.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-5" src="Gabriele.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-6" src="Greta.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-7" src="Kamila.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-8" src="Liana.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-9" src="Lukrecija.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-10" src="Paulius.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-11" src="Rugile.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-12" src="Saule.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-13" src="Ugnius.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-14" src="Urte.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-15" src="Viktorija.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
+          <video id="video-16" src="Vilte.mp4" preload="metadata" loop muted crossorigin="anonymous" playsinline webkit-playsinline></video>
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <a-entity id="image-target" mindar-image-target="targetIndex: 0">
-          <a-video
-            id="overlay-video"
-            src="#ar-video"
-            width="1"
-            height="1.410880787037037"
-            position="0 0 0"
-          ></a-video>
+        <a-entity id="target-0" mindar-image-target="targetIndex: 0">
+          <a-video src="#video-0" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-1" mindar-image-target="targetIndex: 1">
+          <a-video src="#video-1" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-2" mindar-image-target="targetIndex: 2">
+          <a-video src="#video-2" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-3" mindar-image-target="targetIndex: 3">
+          <a-video src="#video-3" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-4" mindar-image-target="targetIndex: 4">
+          <a-video src="#video-4" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-5" mindar-image-target="targetIndex: 5">
+          <a-video src="#video-5" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-6" mindar-image-target="targetIndex: 6">
+          <a-video src="#video-6" width="1" height="1.412037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-7" mindar-image-target="targetIndex: 7">
+          <a-video src="#video-7" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-8" mindar-image-target="targetIndex: 8">
+          <a-video src="#video-8" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-9" mindar-image-target="targetIndex: 9">
+          <a-video src="#video-9" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-10" mindar-image-target="targetIndex: 10">
+          <a-video src="#video-10" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-11" mindar-image-target="targetIndex: 11">
+          <a-video src="#video-11" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-12" mindar-image-target="targetIndex: 12">
+          <a-video src="#video-12" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-13" mindar-image-target="targetIndex: 13">
+          <a-video src="#video-13" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-14" mindar-image-target="targetIndex: 14">
+          <a-video src="#video-14" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-15" mindar-image-target="targetIndex: 15">
+          <a-video src="#video-15" width="1" height="1.410880787037037" position="0 0 0"></a-video>
+        </a-entity>
+        <a-entity id="target-16" mindar-image-target="targetIndex: 16">
+          <a-video src="#video-16" width="1" height="1.410880787037037" position="0 0 0"></a-video>
         </a-entity>
       </a-scene>
     </div>
@@ -262,7 +311,7 @@
         <p>Point at the portrait</p>
       </div>
 
-      <div id="found-badge" class="hidden" aria-live="polite">Portrait found</div>
+      <div id="found-badge" class="hidden" aria-live="polite"></div>
 
       <button
         id="sound-btn"
@@ -287,9 +336,28 @@
 
     <script>
       (function () {
+        /* Must match upload order in MindAR compiler (A→Z if you selected all PNGs sorted by name) */
+        const TARGET_NAMES = [
+          "Airida",
+          "Albertas",
+          "Dalius",
+          "Dija",
+          "Ema",
+          "Gabriele",
+          "Greta",
+          "Kamila",
+          "Liana",
+          "Lukrecija",
+          "Paulius",
+          "Rugile",
+          "Saule",
+          "Ugnius",
+          "Urte",
+          "Viktorija",
+          "Vilte",
+        ];
+
         const sceneEl = document.getElementById("ar-scene");
-        const targetEl = document.getElementById("image-target");
-        const videoEl = document.getElementById("ar-video");
         const bootOverlay = document.getElementById("boot-overlay");
         const bootMessage = document.getElementById("boot-message");
         const tapStartBtn = document.getElementById("tap-start");
@@ -299,10 +367,17 @@
         const retryBtn = document.getElementById("retry-btn");
         const soundBtn = document.getElementById("sound-btn");
 
+        const targets = TARGET_NAMES.map((name, i) => ({
+          name,
+          el: document.getElementById("target-" + i),
+          video: document.getElementById("video-" + i),
+        }));
+
         let arStarted = false;
         let sceneReady = false;
         let soundUnlocked = false;
         let targetVisible = false;
+        let activeVideo = null;
 
         function getArSystem() {
           return sceneEl.systems && sceneEl.systems["mindar-image-system"];
@@ -346,8 +421,14 @@
           startAR();
         }
 
+        function pauseAllVideos() {
+          targets.forEach((t) => t.video.pause());
+        }
+
         function updateSoundButton() {
-          if (videoEl.muted) {
+          const video = activeVideo;
+          const muted = !video || video.muted;
+          if (muted) {
             soundBtn.textContent = "🔇";
             soundBtn.classList.add("is-muted");
             soundBtn.setAttribute("aria-label", "Turn sound on");
@@ -363,48 +444,47 @@
         function unlockSound() {
           if (soundUnlocked) return;
           soundUnlocked = true;
-          videoEl.muted = false;
-          videoEl.volume = 1;
           updateSoundButton();
         }
 
-        async function playOverlay() {
+        async function playVideo(video) {
+          pauseAllVideos();
+          activeVideo = video;
           unlockSound();
-          videoEl.muted = false;
+          video.volume = 1;
+          video.muted = false;
           updateSoundButton();
           try {
-            await videoEl.play();
+            await video.play();
           } catch (e) {
             console.warn("Video play with sound:", e);
-            videoEl.muted = true;
+            video.muted = true;
             updateSoundButton();
             try {
-              await videoEl.play();
+              await video.play();
             } catch (e2) {
               console.warn("Video play muted:", e2);
             }
           }
         }
 
-        function pauseOverlay() {
-          videoEl.pause();
-        }
-
         soundBtn.addEventListener("click", async () => {
           unlockSound();
-          if (videoEl.muted) {
-            videoEl.muted = false;
-            videoEl.volume = 1;
+          const video = activeVideo;
+          if (!video) return;
+          if (video.muted) {
+            video.muted = false;
+            video.volume = 1;
             updateSoundButton();
             if (targetVisible) {
               try {
-                await videoEl.play();
+                await video.play();
               } catch (e) {
                 console.warn("Sound play:", e);
               }
             }
           } else {
-            videoEl.muted = true;
+            video.muted = true;
             updateSoundButton();
           }
         });
@@ -415,6 +495,8 @@
         });
         retryBtn.addEventListener("click", () => {
           arStarted = false;
+          activeVideo = null;
+          pauseAllVideos();
           errorOverlay.classList.add("hidden");
           showBoot("Starting camera…", false);
           tryAutoStart();
@@ -438,21 +520,25 @@
           errorOverlay.classList.remove("hidden");
         });
 
-        targetEl.addEventListener("targetFound", () => {
-          targetVisible = true;
-          foundBadge.classList.remove("hidden");
-          scanHint.classList.add("hidden");
-          playOverlay();
+        targets.forEach(({ name, el, video }) => {
+          el.addEventListener("targetFound", () => {
+            targetVisible = true;
+            foundBadge.textContent = name;
+            foundBadge.classList.remove("hidden");
+            scanHint.classList.add("hidden");
+            playVideo(video);
+          });
+
+          el.addEventListener("targetLost", () => {
+            if (activeVideo !== video) return;
+            targetVisible = false;
+            activeVideo = null;
+            video.pause();
+            foundBadge.classList.add("hidden");
+            scanHint.classList.remove("hidden");
+          });
         });
 
-        targetEl.addEventListener("targetLost", () => {
-          targetVisible = false;
-          foundBadge.classList.add("hidden");
-          scanHint.classList.remove("hidden");
-          pauseOverlay();
-        });
-
-        /* iOS often blocks camera until user taps — one tap anywhere starts AR */
         function onFirstInteraction() {
           unlockSound();
           if (!arStarted && sceneReady) {
@@ -465,7 +551,6 @@
         });
         document.body.addEventListener("click", onFirstInteraction, { once: true });
 
-        /* If auto-start is blocked, show tap button after a short wait */
         setTimeout(() => {
           if (!arStarted && sceneReady) {
             showBoot("Tap to allow camera", true);
